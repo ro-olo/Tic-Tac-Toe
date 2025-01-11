@@ -9,9 +9,32 @@
 <body>
     <script src="script.js" defer></script>
     <script src="tictactoe.js" defer></script>
+    <script src="confetti.js"></script>
     
     <h1>Tic Tac Toe</h1>  
+
+    <div id="startScreen">
+        <h2>Game Mode:</h2>
+        <div class="selectionBtn">
+            <button class="vsBtn" id="vsPlayer">Player vs Player</button>
+            <button class="vsBtn" id="vsCPU">Player vs CPU</button>
+        </div>
+    </div>
+
+    <div id="iconScreen">
+        <h2>Icon selection:</h2>
+        <div class="selectionBtn">
+            <button class="iconBtn" id="donut"><img class="imgIcon" src="img/x-icon.png" alt="cupcake token"></button>
+            <button class="iconBtn" id="cupcake"><img class="imgIcon" src="img/o-icon.png" alt="donut token"></button>
+            <button class="iconBtn" id="cupcake"><img class="imgIcon" src="img/pizza.png" alt="pizza token"></button>
+            <button class="iconBtn" id="cupcake"><img class="imgIcon" src="img/ice-cream.png" alt="ice-cream token"></button>
+        </div>
+    </div>
+
+    <div id="gifContainer"></div>
     <div id="boardContainer"></div>
-    <div id="gameMessage"></div>
+    <div id="gameMessage">
+        <div id="activePlayerMessage"></div>
+    </div>
 </body>
 </html>

@@ -1,3 +1,8 @@
+document.addEventListener("DOMContentLoaded", () => {
+    initializeGame();
+});
+
+
 function Gameboard() {
     const rows = 3;
     const columns = 3;
@@ -71,9 +76,15 @@ function GameController(
         let activePlayer = players[0];
         let gameOver = false;
 
+        const updateActivePlayerMessage = () => {
+            const messageElement = document.getElementById("activePlayerMessage");
+            if (!messageElement) return;
+            messageElement.textContent = `It's now ${activePlayer.name}'s turn.`;
+        }
         const switchTurn = () => {
             activePlayer = activePlayer === players [0] ? players[1] : players[0];
-            console.log(`Turn switched. It's now ${activePlayer.name}'s turn.`)
+            console.log(`It's now ${activePlayer.name}'s turn.`)
+            updateActivePlayerMessage();
         };
         
         const getActivePlayer = () => activePlayer;
@@ -165,7 +176,8 @@ function GameController(
             const winner = checkWinner();
             if (winner) {
                 gameOver = true;
-                endGame(`${winner} wins!`);
+                endGame(`Player ${winner} wins!`);
+                startConfetti();
                 return;
             }
 
@@ -173,6 +185,46 @@ function GameController(
             else if (checkDraw()) {
                 gameOver = true;
                 endGame("It's a draw!");
+
+                const gifContainer = document.getElementById("gifContainer");
+
+                const gif = document.createElement("img");
+                gif.src = "img/cat.gif";
+                gif.alt = "annoyed cat meme";
+                gif.classList.add("cat_gif");
+
+                const gifTwo = document.createElement("img");
+                gifTwo.src = "img/cat2.gif";
+                gifTwo.alt = "annoyed cat meme";
+                gifTwo.classList.add("cat_gif");
+                
+                const gifThree = document.createElement("img");
+                gifThree.src = "img/cat3.gif";
+                gifThree.alt = "annoyed cat meme";
+                gifThree.classList.add("cat_gif");
+
+                const gifFour = document.createElement("img");
+                gifFour.src = "img/cat4.gif";
+                gifFour.alt = "annoyed cat meme";
+                gifFour.classList.add("cat_gif");
+
+                const customPositions = [
+                    { top: "75%", left: "8%" },
+                    { top: "20%", left: "80%" },
+                    { top: "65%", left: "70%" },
+                    { top: "7%", left: "8%" },
+                ];
+
+                [gif, gifTwo, gifThree, gifFour].forEach((gifElement, index) => {
+                    const position = customPositions[index];
+        
+                    // Applica la posizione specifica
+                    gifElement.style.position = "absolute";
+                    Object.assign(gifElement.style, position);
+        
+                    gifContainer.appendChild(gifElement);
+                });
+
                 return;
             }
 
@@ -186,16 +238,15 @@ function GameController(
                 console.log("go false");
                 activePlayer = players[0];
                 board = Gameboard();
-                console.log("new board created")
+                updateActivePlayerMessage();
+                stopConfetti();
+                gifContainer.innerHTML = "";
+                console.log("new board created");
 
                 const rows = 3;
                 const columns = 3;
                 console.log(board.getBoard())
-                // for (let i = 0; i < rows; i++) {
-                //     for (let j = 0; j < columns; j++) {
-                //         board.getBoard()[i].addToken(0);
-                //     }
-                // }
+            
                 for (let i = 0; i < rows; i++) {
                     for (let j = 0; j < columns; j++) {
                         board.getBoard()[i][j].addToken(0);
@@ -213,6 +264,7 @@ function GameController(
                 board,
                 reset,
                 isGameOver: () => gameOver,
+                updateActivePlayerMessage,
             };
 };
 

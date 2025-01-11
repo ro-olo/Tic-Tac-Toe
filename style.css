@@ -1,6 +1,7 @@
 * {
-    background-color: rgb(26, 26, 26);
-    color: rgb(226, 226, 226);
+    background-color: rgb(11, 0, 18);
+    color: rgb(236, 230, 236);
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
@@ -12,21 +13,204 @@ body {
     flex-direction: column;
 }
 
+h1 {
+    padding: 25px;
+    font-size: 50px;
+}
+
 #boardContainer {
     display: grid;
     grid-template-rows: repeat(3, 1fr);
     grid-template-columns: repeat(3, 1fr);
-    border: 4px solid rgb(226, 226, 226);
     width: 300px;
     height: 300px;
 }
 
 .cell {
-    border: 4px solid rgb(226, 226, 226);
+    border: 4px solid rgb(255, 129, 247);
+    color: white;
+    box-sizing: border-box;
     display: flex;
     justify-content: center;
     align-items: center;
     font-weight: 800;
     font-family: Arial, Helvetica, sans-serif;
+    font-size: 40px;
+}
+
+#boardContainer > :nth-child(-n+3) {
+    border-top: none; /* Rimuove il bordo superiore */
+}
+
+#boardContainer > :nth-last-child(-n+3) {
+    border-bottom: none; /* Rimuove il bordo inferiore */
+}
+
+#boardContainer > :nth-child(3n+1) {
+    border-left: none; /* Rimuove il bordo sinistro */
+}
+
+#boardContainer > :nth-child(3n) {
+    border-right: none; /* Rimuove il bordo destro */
+}
+
+#gameMessage {
+    padding: 20px;
+    height: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+}
+
+p {
     font-size: 30px;
+    font-weight: 600;
+}
+
+#activePlayerMessage {
+    padding-top: 15px;
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.restart_btn {
+    width: 120px;
+    height: 100px;
+    border: 2px solid white;
+    background-color: rgb(0, 170, 255);
+    border-radius: 15px;
+    padding: 10px;
+    font-weight: 600;
+    font-size: 30px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.restart_btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0px 2px 5px rgba(8, 2, 29, 0.4);
+    color: rgb(255, 129, 247);
+    border: 3px solid rgb(255, 129, 247);
+    background-color: rgb(255, 246, 254);
+}
+
+.cell img {
+    display: block;
+    width: 70%;
+    height: 70%;
+    object-fit: contain;
+}
+
+#confetti-canvas {
+    background: none;
+    position: fixed;
+    width: 100%;
+    height: 800px;
+    object-fit: cover;
+}
+
+#gifContainer {
+    position: fixed;
+    top: 0;
+    width: 750px;
+    height: 100vh;
+    z-index: 1000;
+    pointer-events: none;
+    overflow: hidden;
+    background: none;
+}
+
+.cat_gif {
+    max-width: 100px;
+    animation: fadeInOut 5s ease-in-out infinite;
+}
+
+@keyframes fadeInMove {
+    0%, 100% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.cat_gif {
+    max-width: 150px;
+    height: auto;
+    position: absolute;
+    opacity: 0;
+}
+
+.cat_gif:nth-child(1) {
+    animation: fadeInMove 5s ease-in-out infinite;
+}
+
+.cat_gif:nth-child(2) {
+    animation: fadeInMove 3s ease-in-out infinite;
+}
+
+.cat_gif:nth-child(3) {
+    animation: fadeInMove 4s ease-in-out infinite;
+}
+
+.cat_gif:nth-child(4) {
+    animation: fadeInMove 3.5s ease-in-out infinite;
+}
+
+#startScreen {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 350px;
+    width: 350px;
+    margin-top: 120px;
+    z-index: 10;
+    position: fixed;
+    padding: 20px 50px 20px 50px;
+    border: 5px solid rgb(255, 129, 247);
+    border-radius: 15px;
+}
+
+.selectionBtn {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.vsBtn, .iconBtn {
+    cursor: pointer;
+    height: 100px;
+    width: 100px;
+    border: 3px solid rgb(0, 170, 255);
+    border-radius: 15px;
+    padding: 15px;
+    font-size: 20px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.vsBtn:hover {
+    transform: scale(1.1);
+    background-color: rgb(234, 255, 0);
+    color: rgb(0, 170, 255);
+}
+
+.imgIcon {
+    width: 100%;
+    height: 100%;
+}
+
+.iconBtn:hover {
+    transform: scale(1.1);
+    border-color: rgb(234, 255, 0);
+}
+
+.iconBtn:active, .vsBtn:active {
+    transform: translateY(2px);
 }

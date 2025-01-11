@@ -1,3 +1,7 @@
+document.addEventListener("DOMContentLoaded", () => {
+    initializeGame();
+});
+
 function createBoard(rows, columns) {
     const container = document.getElementById("boardContainer");
 
@@ -14,6 +18,16 @@ function createBoard(rows, columns) {
 
 const initializeGame = () => {
     createBoard(3, 3);
+    game.updateActivePlayerMessage();
+
+    const activePlayer = game.getActivePlayer();
+        const messageElement = document.getElementById("activePlayerMessage");
+        if (messageElement) {
+            messageElement.textContent = `It's now ${activePlayer.name}'s turn.`;
+        } else { 
+            console.log("niente aaaa")
+        }
+
     const cells = document.querySelectorAll(".cell");
     cells.forEach((cell, index) => {
         const row = Math.floor(index / 3);
@@ -33,13 +47,13 @@ const initializeGame = () => {
                 console.log(game.board.getBoard()[row][column].getValue());
                 return;
             }
-            
+
+            const img = document.createElement("img");
+            img.src = activePlayer.token === 1 ? "img/x-icon.png" : "img/o-icon.png";
+            img.alt = activePlayer.token === 1 ? "X" : "O";
+            cell.appendChild(img);
+
             game.playRound(row, column);
-            cell.textContent = activePlayer.token === 1 ? "X" : "O";
-        
-            //if (game.isGameOver()) {
-            //   endGame();
-            //}
         });
     });
 };
@@ -66,42 +80,51 @@ const updateMessage = (message) => {
     restartBtn.classList.add("restart_btn");
     restartBtn.addEventListener("click", resetGame);
 
-    messageContainer.appendChild(restartBtn);
     messageContainer.appendChild(messageText);
+    messageContainer.appendChild(restartBtn);
 }
 
 function resetGame() {
     const restartBtn = document.querySelector(".restart_btn");
     if (restartBtn) restartBtn.remove();
 
-    messageContainer.innerHTML = "";
+    const messageContainer = document.getElementById("gameMessage");
+    if (messageContainer) {
+        messageContainer.innerHTML = "";
+    }
+
+    // Ricrea o trova l'elemento del messaggio
+    let messageElement = document.getElementById("activePlayerMessage");
+    if (!messageElement) {
+        messageElement = document.createElement("div");
+        messageElement.id = "activePlayerMessage";
+    }
+
+    // Assicura che sia figlio di gameMessage
+    if (messageContainer) {
+        messageContainer.appendChild(messageElement);
+    }
+
     game.board = game.reset.call(game);
-    initializeGame();
+    const activePlayer = game.getActivePlayer();
 
-    const cells = document.querySelectorAll(".cell");
-    cells.forEach(cell => {
-        cell.style.pointerEvents = "auto";
-        cell.textContent = "";
+    console.log(messageElement);
+    console.log("Contenuto DOM dopo il reset:", messageElement ? messageElement.textContent : "Elemento non trovato");
+    if (messageElement) {
+        messageElement.textContent = `It's now ${activePlayer.name}'s turn.`;
+    }
+    
+    setTimeout(() => {
+        game.updateActivePlayerMessage();
+        initializeGame();
 
-        const row = Math.floor(index / 3);
-        const column = index % 3;
+        const updatedMessageElement = document.getElementById("activePlayerMessage");
+        if (updatedMessageElement) {
+            updatedMessageElement.textContent = `It's now ${activePlayer.name}'s turn.`;
+        }
+    }, 0);
 
-        cell.addEventListener("click", () => {
-            if (game.isGameOver()) {
-                return;
-            }
-
-            const activePlayer = game.getActivePlayer();
-
-            if (game.board.getBoard()[row][column].getValue() !== 0) {
-                return;
-            }
-
-            game.playRound(row, column);
-            cell.textContent = activePlayer.token === 1 ? "X" : "O";
-        })
-        
-    });
+    console.log("Game has been reset. Active player:", activePlayer.name);
 
     console.log("game reset");
 };
