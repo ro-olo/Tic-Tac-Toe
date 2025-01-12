@@ -160,14 +160,14 @@ p {
     animation: fadeInMove 3.5s ease-in-out infinite;
 }
 
-#startScreen {
+#startScreen, #iconScreen {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 350px;
     width: 350px;
-    margin-top: 120px;
+    margin-top: 520px;
     z-index: 10;
     position: fixed;
     padding: 20px 50px 20px 50px;
@@ -175,7 +175,22 @@ p {
     border-radius: 15px;
 }
 
+#iconScreen {
+    margin-top: 600px;
+    display: flex;
+}
+
 .selectionBtn {
+    display: grid;
+    grid-template-columns: 100px 1fr 1fr;
+    grid-template-rows: auto 1fr;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    padding: 20px;
+}
+
+.vsSelectionBtn {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -213,4 +228,8 @@ p {
 
 .iconBtn:active, .vsBtn:active {
     transform: translateY(2px);
+}
+
+#iconScreen {
+    height: 430px;
 }

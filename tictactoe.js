@@ -49,7 +49,7 @@ const initializeGame = () => {
             }
 
             const img = document.createElement("img");
-            img.src = activePlayer.token === 1 ? "img/x-icon.png" : "img/o-icon.png";
+            img.src = activePlayer.token === 1 ? "img/poop.png" : "img/dinosaur.png";
             img.alt = activePlayer.token === 1 ? "X" : "O";
             cell.appendChild(img);
 
