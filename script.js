@@ -176,7 +176,7 @@ function GameController(
             const winner = checkWinner();
             if (winner) {
                 gameOver = true;
-                endGame(`Player ${winner} wins!`);
+                endGame(`${activePlayer.name} wins!`);
                 startConfetti();
                 return;
             }
@@ -269,5 +269,4 @@ function GameController(
 };
 
 const game = GameController();
-
 

@@ -95,6 +95,10 @@ p {
     background-color: rgb(255, 246, 254);
 }
 
+.restart_btn:active {
+    transform: translateY(2px);
+}
+
 .cell img {
     display: block;
     width: 70%;

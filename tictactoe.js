@@ -16,16 +16,25 @@ function createBoard(rows, columns) {
     }
 }
 
-const initializeGame = () => {
+function initializeGame() {
     createBoard(3, 3);
     game.updateActivePlayerMessage();
+
+    document.querySelectorAll(".iconBtn").forEach(button => {
+        button.addEventListener("click", (event) => {
+            const selectedIcon = event.currentTarget.querySelector("img").getAttribute("data-icon");
+            const tokenPath = `img/${selectedIcon}`;
+            activePlayer.token = tokenPath; // Assegna il token come stringa con il percorso dell'immagine
+            console.log(`Player ${activePlayer.name} selected token: ${activePlayer.token}`);
+        });
+    });
 
     const activePlayer = game.getActivePlayer();
         const messageElement = document.getElementById("activePlayerMessage");
         if (messageElement) {
             messageElement.textContent = `It's now ${activePlayer.name}'s turn.`;
         } else { 
-            console.log("niente aaaa")
+            console.log("niente")
         }
 
     const cells = document.querySelectorAll(".cell");
@@ -35,8 +44,7 @@ const initializeGame = () => {
 
         cell.addEventListener("click", () => {
             if (game.isGameOver()) {
-                console.log(game.isGameOver())
-                console.log("on noh game over oh noooo")
+                console.log(game.isGameOver());
                 return;
             }
 
@@ -49,14 +57,38 @@ const initializeGame = () => {
             }
 
             const img = document.createElement("img");
-            img.src = activePlayer.token === 1 ? "img/poop.png" : "img/dinosaur.png";
-            img.alt = activePlayer.token === 1 ? "X" : "O";
-            cell.appendChild(img);
+
+            if (typeof activePlayer.token === "string") {
+                img.src = activePlayer.token; //percorso immagine del token selezionato dal giocatore attivo
+                
+                //nome del file per determinare l'icona (in base al data-icon)
+                img.alt = activePlayer.token.split('/').pop().split('.')[0]; // Estrae il nome del file senza estensione (es. "x-icon", "poop", "dinosaur", etc.)
+                
+                //immagine alla cella
+                cell.appendChild(img);
+            } else {
+                console.error("activePlayer.token non è una stringa: ", activePlayer.token);
+            }
+
+            // img.src = activePlayer.token;
+            // img.alt = activePlayer.token.split('/').pop().split('.')[0];
+            // cell.appendChild(img);
 
             game.playRound(row, column);
+
+            if ( 
+                !game.isGameOver() &&
+                game.mode === "Player vs CPU" &&
+                activePlayer.name === "Player"
+            ) {
+                setTimeout(() => {
+                    cpuTurn();
+                }, 500);
+            }
         });
     });
-};
+}
+
 
 const endGame = (message) => {
     updateMessage(message);
