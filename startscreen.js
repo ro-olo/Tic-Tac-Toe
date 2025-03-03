@@ -1,6 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    const game = {
+    // Initialize the game object
+    window.game = {
         mode: null,
         player1: { name: null, token: null },
         player2: { name: null, token: null },
@@ -12,7 +13,9 @@ document.addEventListener("DOMContentLoaded", () => {
         updateActivePlayerMessage: () => {
             console.log("Aggiorno messaggio giocatore attivo.");
         },
-        getActivePlayer: () => (this.mode === "Player vs Player" ? this.player1 : this.player1), // Modifica per il giocatore attivo
+        getActivePlayer: () => {
+            return window.game.player1; // Default to player1 until properly initialized
+        }
     };
 
     //get di tutti gli elements
@@ -79,6 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (currentPlayerSelecting === 1) {
                 button.disabled = true;
                 game.player1.token = `img/${selectedIcon}`; // Assegna l'icona a Player 1
+                console.log(`Player 1 token set to: ${game.player1.token}`);
                 console.log(`Player 1 selected icon: ${selectedIcon}`);
                 currentPlayerSelecting = 2; // Passa al giocatore 2
                 document.getElementById("iconScreen").querySelector("h2").textContent =
@@ -86,13 +90,13 @@ document.addEventListener("DOMContentLoaded", () => {
             } else if (currentPlayerSelecting === 2) {
                 button.disabled = true;
                 game.player2.token = `img/${selectedIcon}`; // Assegna l'icona a Player 2
+                console.log(`Player 2 token set to: ${game.player2.token}`);
                 console.log(`Player 2 selected icon: ${selectedIcon}`);
                 showScreen(boardContainer);
                 initializeGame();
             } else {
                 console.log("No icon selected for Player 2!");
-            } 
-            
+            }
         });
     });
 
@@ -105,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function setupPlayervsCPU() {
         game.mode = "Player vs CPU";
         game.player1 = {name: "Player", token: null };
-        game.player2 = {name: "CPU", token: "./img/poop.png" };
+        game.player2 = {name: "CPU", token: "img/poop.png" };
 
         cpuTurn = () => {
             console.log("CPU turn started");
@@ -148,11 +152,23 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function initializeGame() {
-        console.log("Inizializzazione del gioco...");
-        console.log("GAME INITIALIZER")
-        console.log("Player 1" + game.player1.token  + game.player1.token)
+        console.log("Inizializzazione del gioco in startscreen.js");
+        console.log("Player 1 Token before GameController:", game.player1.token);
+        console.log("Player 2 Token before GameController:", game.player2.token);
         
-        console.log("Player 2" + game.player2.token  + game.player2.token)
+        // Create a new game controller with the selected tokens
+        const newGame = GameController(
+            game.player1.name,
+            game.player2.name,
+            game.player1.token,
+            game.player2.token
+        );
+        
+        // Replace the global game object with the new one
+        window.game = newGame;
+        
+        console.log("New game created:", window.game);
+        
         // Logica per iniziare una nuova partita (crea il tabellone, azzera lo stato, ecc.)
     }
 

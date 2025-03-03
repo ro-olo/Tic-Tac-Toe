@@ -1,5 +1,10 @@
 document.addEventListener("DOMContentLoaded", () => {
-    initializeGame();
+    // Check if the game object exists before initializing
+    if (window.game) {
+        initializeGame();
+    } else {
+        console.error("Game object not found. Please ensure the game is properly initialized.");
+    }
 });
 
 function createBoard(rows, columns) {
@@ -20,22 +25,27 @@ function initializeGame() {
     createBoard(3, 3);
     game.updateActivePlayerMessage();
 
-    // document.querySelectorAll(".iconBtn").forEach(button => {
-    //     button.addEventListener("click", (event) => {
-    //         const selectedIcon = event.currentTarget.querySelector("img").getAttribute("data-icon");
-    //         const tokenPath = `img/${selectedIcon}`;
-    //         activePlayer.token = tokenPath; // Assegna il token come stringa con il percorso dell'immagine
-    //         console.log(`Player ${activePlayer.name} selected token: ${activePlayer.token}`);
-    //     });
-    // });
+    console.log("GAME INITIALIZATION IN TICTACTOE.JS");
+    console.log("Game object:", game);
+    
+    // Check if the game has a getPlayers function
+    if (game.getPlayers) {
+        const players = game.getPlayers();
+        console.log("Players from game.getPlayers():", players);
+        console.log("Player 1:", players[0]);
+        console.log("Player 2:", players[1]);
+    } else {
+        console.log("Player 1:", game.players ? game.players[0] : "Players not defined");
+        console.log("Player 2:", game.players ? game.players[1] : "Players not defined");
+    }
 
-    const activePlayer = game.getActivePlayer();
-        const messageElement = document.getElementById("activePlayerMessage");
-        if (messageElement) {
-            messageElement.textContent = `It's now ${activePlayer.name}'s turn.`;
-        } else { 
-            console.log("niente")
-        }
+    const activePlayer = game.getActivePlayer ? game.getActivePlayer() : null;
+    const messageElement = document.getElementById("activePlayerMessage");
+    if (messageElement && activePlayer) {
+        messageElement.textContent = `It's now ${activePlayer.name}'s turn.`;
+    } else { 
+        console.log("Active player or message element not found");
+    }
 
     const cells = document.querySelectorAll(".cell");
     cells.forEach((cell, index) => {
@@ -48,7 +58,9 @@ function initializeGame() {
                 return;
             }
 
-            const activePlayer = game.getActivePlayer();
+            const activePlayer = game.getActivePlayer ? game.getActivePlayer() : null;
+            console.log("Active Player in cell click:", activePlayer);
+            console.log("Active Player Token in cell click:", activePlayer ? activePlayer.token : null);
 
             if (game.board.getBoard()[row][column].getValue() !== 0) {
                 console.log("Cell occupied");
@@ -56,30 +68,37 @@ function initializeGame() {
                 return;
             }
 
+            console.log("Active Player Token: ", activePlayer ? activePlayer.token : null);
             const img = document.createElement("img");
-
-            if (typeof activePlayer.token === "string") {
-                img.src = activePlayer.token; //percorso immagine del token selezionato dal giocatore attivo
-                
-                //nome del file per determinare l'icona (in base al data-icon)
-                img.alt = activePlayer.token.split('/').pop().split('.')[0]; // Estrae il nome del file senza estensione (es. "x-icon", "poop", "dinosaur", etc.)
-                
-                //immagine alla cella
-                cell.appendChild(img);
+            
+            // Use the token directly if it's a string (path to image)
+            if (activePlayer && typeof activePlayer.token === "string") {
+                img.src = activePlayer.token;
+                console.log("Using string token image: ", img.src);
             } else {
-                console.error("activePlayer.token non è una stringa: ", activePlayer.token);
+                console.error("activePlayer.token is not valid: ", activePlayer ? activePlayer.token : null);
+                return; // Exit if token is invalid
             }
-
-            // img.src = activePlayer.token;
-            // img.alt = activePlayer.token.split('/').pop().split('.')[0];
-            // cell.appendChild(img);
+            
+            console.log("Image created with source: ", img.src);
+            
+            // Set alt text based on image source
+            const imgSrc = img.src;
+            if (typeof imgSrc === "string") {
+                const fileName = imgSrc.split('/').pop().split('.')[0];
+                img.alt = fileName;
+                console.log("Image alt set to: ", fileName);
+            }
+            
+            //immagine alla cella
+            cell.appendChild(img);
 
             game.playRound(row, column);
 
             if ( 
                 !game.isGameOver() &&
                 game.mode === "Player vs CPU" &&
-                activePlayer.name === "Player"
+                activePlayer && activePlayer.name === "Player"
             ) {
                 setTimeout(() => {
                     cpuTurn();
@@ -99,9 +118,15 @@ const endGame = (message) => {
     });
 };
 
-const messageContainer = document.getElementById("gameMessage");
-
 const updateMessage = (message) => {
+    const messageContainer = document.getElementById("gameMessage");
+    
+    // Check if messageContainer exists
+    if (!messageContainer) {
+        console.error("Message container not found!");
+        return;
+    }
+    
     messageContainer.innerHTML = "";
 
     const messageText = document.createElement("p");
@@ -138,11 +163,11 @@ function resetGame() {
     }
 
     game.board = game.reset.call(game);
-    const activePlayer = game.getActivePlayer();
+    const activePlayer = game.getActivePlayer ? game.getActivePlayer() : null;
 
     console.log(messageElement);
     console.log("Contenuto DOM dopo il reset:", messageElement ? messageElement.textContent : "Elemento non trovato");
-    if (messageElement) {
+    if (messageElement && activePlayer) {
         messageElement.textContent = `It's now ${activePlayer.name}'s turn.`;
     }
     
@@ -151,14 +176,14 @@ function resetGame() {
         initializeGame();
 
         const updatedMessageElement = document.getElementById("activePlayerMessage");
-        if (updatedMessageElement) {
+        if (updatedMessageElement && activePlayer) {
             updatedMessageElement.textContent = `It's now ${activePlayer.name}'s turn.`;
         }
     }, 0);
 
-    console.log("Game has been reset. Active player:", activePlayer.name);
+    console.log("Game has been reset. Active player:", activePlayer ? activePlayer.name : null);
 
     console.log("game reset");
 };
 
-initializeGame();
+// initializeGame();

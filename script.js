@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-    initializeGame();
+    // The game will be initialized in startscreen.js
+    console.log("script.js loaded, waiting for game initialization from startscreen.js");
 });
-
 
 function Gameboard() {
     const rows = 3;
@@ -34,8 +34,8 @@ function Gameboard() {
                 .map(cell => {
                     const value = cell.getValue();
                     if (value === 0) return "-";
-                    if (value === 1) return "X";
-                    if (value === 2) return "O";
+                    if (value === "img/x-icon.png") return "X";
+                    if (value === "img/o-icon.png") return "O";
                 })
                 .join(" | ");
             console.log(rowString);
@@ -60,16 +60,24 @@ function Cell() {
 
 function GameController(
     playerOneName = "Player One", 
-    playerTwoName = "Player Two") {
+    playerTwoName = "Player Two",
+    playerOneToken = "img/x-icon.png",
+    playerTwoToken = "img/o-icon.png") {
+        console.log("GameController initialized with:");
+        console.log("Player 1 Name:", playerOneName);
+        console.log("Player 2 Name:", playerTwoName);
+        console.log("Player 1 Token:", playerOneToken);
+        console.log("Player 2 Token:", playerTwoToken);
+        
         let board = Gameboard();
         const players = [
             {
                 name: playerOneName,
-                token: 1
+                token: playerOneToken
             },
             {
                 name: playerTwoName,
-                token: 2
+                token: playerTwoToken
             }
         ];
 
@@ -88,6 +96,7 @@ function GameController(
         };
         
         const getActivePlayer = () => activePlayer;
+        const getPlayers = () => players;
 
         //vittorie e pareggi
 
@@ -259,14 +268,12 @@ function GameController(
             }
 
             return {
+                board,
                 playRound,
                 getActivePlayer,
-                board,
+                getPlayers,
                 reset,
                 isGameOver: () => gameOver,
                 updateActivePlayerMessage,
             };
 };
-
-const game = GameController();
-
