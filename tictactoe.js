@@ -68,6 +68,12 @@ function initializeGame() {
                 return;
             }
 
+            // Only allow player moves (not CPU moves) when clicking
+            if (activePlayer && activePlayer.name === "CPU") {
+                console.log("It's CPU's turn, please wait for CPU to make a move");
+                return;
+            }
+
             console.log("Active Player Token: ", activePlayer ? activePlayer.token : null);
             const img = document.createElement("img");
             
@@ -95,19 +101,73 @@ function initializeGame() {
 
             game.playRound(row, column);
 
+            console.log("After player move - Game mode:", game.mode);
+            console.log("After player move - Game over?", game.isGameOver());
+            console.log("After player move - Active player:", game.getActivePlayer ? game.getActivePlayer().name : "Unknown");
+
             if ( 
                 !game.isGameOver() &&
-                game.mode === "Player vs CPU" &&
-                activePlayer && activePlayer.name === "Player"
+                game.mode === "Player vs CPU"
             ) {
+                console.log("CPU turn should be triggered now");
                 setTimeout(() => {
-                    cpuTurn();
+                    console.log("Inside setTimeout callback");
+                    // Call the cpuTurn function defined in startscreen.js
+                    if (typeof window.cpuTurn === 'function') {
+                        console.log("Calling window.cpuTurn");
+                        window.cpuTurn();
+                    } else {
+                        console.error("cpuTurn function not found!");
+                        console.log("Available global functions:", Object.keys(window).filter(key => typeof window[key] === 'function'));
+                    }
                 }, 500);
             }
         });
     });
 }
 
+// const availableTokens = [
+//     'img/x-icon.png',
+//     'img/o-icon.png',
+//     'img/pizza.png',
+//     'img/ice-cream.png',
+//     'img/poop.png',
+//     'img/happy.png',
+//     'img/banana.png',
+//     'img/cat.png',
+//     'img/dinosaur.png'
+// ];
+
+// function cpuTurn() {
+//     // Get all cells
+//     const cells = document.querySelectorAll(".cell");
+//     const emptyCells = [];
+
+//     // Find empty cells
+//     cells.forEach((cell, index) => {
+//         if (cell.textContent === "") {
+//             emptyCells.push(index);
+//         }
+//     });
+
+//     // Randomly select an empty cell
+//     if (emptyCells.length > 0) {
+//         const randomIndex = Math.floor(Math.random() * emptyCells.length);
+//         const selectedCellIndex = emptyCells[randomIndex];
+
+//         // Randomly select a token from available tokens
+//         const randomTokenIndex = Math.floor(Math.random() * availableTokens.length);
+//         const selectedToken = availableTokens[randomTokenIndex];
+
+//         // Simulate CPU thinking with a delay
+//         setTimeout(() => {
+//             // Simulate placing the CPU's token in the selected cell
+//             cells[selectedCellIndex].textContent = selectedToken;
+//             // Call playRound or any other function to handle the game logic
+//             game.playRound(Math.floor(selectedCellIndex / 3), selectedCellIndex % 3);
+//         }, 1000); // 1 second delay
+//     }
+// }
 
 const endGame = (message) => {
     updateMessage(message);

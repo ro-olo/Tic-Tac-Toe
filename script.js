@@ -69,6 +69,23 @@ function GameController(
         console.log("Player 1 Token:", playerOneToken);
         console.log("Player 2 Token:", playerTwoToken);
         
+        // Ensure CPU always has a valid token
+        if (playerTwoName === "CPU" && (!playerTwoToken || playerTwoToken === "null")) {
+            const defaultTokens = [
+                'img/x-icon.png',
+                'img/o-icon.png',
+                'img/pizza.png',
+                'img/ice-cream.png',
+                'img/happy.png',
+                'img/banana.png',
+                'img/cat.png',
+                'img/dinosaur.png'
+            ];
+            const randomIndex = Math.floor(Math.random() * defaultTokens.length);
+            playerTwoToken = defaultTokens[randomIndex];
+            console.log("CPU token was null, assigned random token:", playerTwoToken);
+        }
+        
         let board = Gameboard();
         const players = [
             {
