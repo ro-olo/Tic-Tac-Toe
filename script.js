@@ -107,8 +107,9 @@ function GameController(
             messageElement.textContent = `It's now ${activePlayer.name}'s turn.`;
         }
         const switchTurn = () => {
-            activePlayer = activePlayer === players [0] ? players[1] : players[0];
-            console.log(`It's now ${activePlayer.name}'s turn.`)
+            activePlayer = activePlayer === players[0] ? players[1] : players[0];
+            console.log(`Active player switched to: ${activePlayer.name}`);
+            console.log(`It's now ${activePlayer.name}'s turn.`);
             updateActivePlayerMessage();
         };
         

@@ -163,6 +163,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (currentPlayerSelecting === 1) {
                 button.disabled = true;
+                button.classList.add('disabled'); // Add a class to visually indicate it's disabled
                 game.player1.token = tokenPath; // Assegna l'icona a Player 1
                 console.log(`Player 1 token set to: ${game.player1.token}`);
                 console.log(`Player 1 selected icon: ${selectedIcon}`);
@@ -177,6 +178,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
             } else if (currentPlayerSelecting === 2) {
                 button.disabled = true;
+                button.classList.add('disabled'); // Add a class to visually indicate it's disabled
                 game.player2.token = tokenPath; // Assegna l'icona a Player 2
                 console.log(`Player 2 token set to: ${game.player2.token}`);
                 console.log(`Player 2 selected icon: ${selectedIcon}`);
@@ -199,13 +201,14 @@ document.addEventListener("DOMContentLoaded", () => {
         game.player1 = {name: "Player", token: null };
         game.player2 = {name: "CPU", token: null };
 
+        console.log(`Player One's name set to: ${game.player1.name}`);
+
         // Available tokens for CPU to choose from
         const availableTokens = [
             'img/x-icon.png',
             'img/o-icon.png',
             'img/pizza.png',
             'img/ice-cream.png',
-            'img/poop.png',
             'img/happy.png',
             'img/banana.png',
             'img/cat.png',
@@ -216,6 +219,9 @@ document.addEventListener("DOMContentLoaded", () => {
         const randomTokenIndex = Math.floor(Math.random() * availableTokens.length);
         game.player2.token = availableTokens[randomTokenIndex];
         console.log(`CPU automatically assigned token: ${game.player2.token}`);
+
+        // Ensure Player One's name is set correctly
+        console.log(`Player One's name: ${game.player1.name}`);
     }
 
     function initializeGame() {
