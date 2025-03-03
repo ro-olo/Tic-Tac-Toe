@@ -20,14 +20,14 @@ function initializeGame() {
     createBoard(3, 3);
     game.updateActivePlayerMessage();
 
-    document.querySelectorAll(".iconBtn").forEach(button => {
-        button.addEventListener("click", (event) => {
-            const selectedIcon = event.currentTarget.querySelector("img").getAttribute("data-icon");
-            const tokenPath = `img/${selectedIcon}`;
-            activePlayer.token = tokenPath; // Assegna il token come stringa con il percorso dell'immagine
-            console.log(`Player ${activePlayer.name} selected token: ${activePlayer.token}`);
-        });
-    });
+    // document.querySelectorAll(".iconBtn").forEach(button => {
+    //     button.addEventListener("click", (event) => {
+    //         const selectedIcon = event.currentTarget.querySelector("img").getAttribute("data-icon");
+    //         const tokenPath = `img/${selectedIcon}`;
+    //         activePlayer.token = tokenPath; // Assegna il token come stringa con il percorso dell'immagine
+    //         console.log(`Player ${activePlayer.name} selected token: ${activePlayer.token}`);
+    //     });
+    // });
 
     const activePlayer = game.getActivePlayer();
         const messageElement = document.getElementById("activePlayerMessage");

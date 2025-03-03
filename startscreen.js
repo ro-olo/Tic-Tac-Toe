@@ -91,7 +91,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 initializeGame();
             } else {
                 console.log("No icon selected for Player 2!");
-            }
+            } 
+            
         });
     });
 
@@ -104,7 +105,7 @@ document.addEventListener("DOMContentLoaded", () => {
     function setupPlayervsCPU() {
         game.mode = "Player vs CPU";
         game.player1 = {name: "Player", token: null };
-        game.player2 = {name: "CPU", token: "img/poop.png" };
+        game.player2 = {name: "CPU", token: "./img/poop.png" };
 
         cpuTurn = () => {
             console.log("CPU turn started");
@@ -148,6 +149,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function initializeGame() {
         console.log("Inizializzazione del gioco...");
+        console.log("GAME INITIALIZER")
+        console.log("Player 1" + game.player1.token  + game.player1.token)
+        
+        console.log("Player 2" + game.player2.token  + game.player2.token)
         // Logica per iniziare una nuova partita (crea il tabellone, azzera lo stato, ecc.)
     }
 
